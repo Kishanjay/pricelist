@@ -9,7 +9,7 @@
   --color-error: #d32f2f;
   --radius: 10px;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --search-height: 56px;
+  --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
@@ -48,17 +48,28 @@ body {
 }
 
 #root {
-  min-height: 100dvh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
 }
 
-/* Header row */
+/* App shell — fixed flex layout, no scroll on the outer container */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Header row — sticky at top, below iOS status bar */
 .header-row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  padding: 4px 2px 6px;
+  padding: 4px 14px 6px;
+  padding-top: calc(4px + var(--safe-top));
+  background: var(--color-bg);
+  flex-shrink: 0;
 }
 
 .header-title {
@@ -72,12 +83,12 @@ body {
   color: var(--color-text-muted);
 }
 
-/* Main scrollable area */
+/* Main scrollable area — only this part scrolls */
 .main {
   flex: 1;
   overflow-y: auto;
-  padding: 8px 12px;
-  padding-bottom: calc(var(--search-height) + var(--safe-bottom) + 16px);
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 12px 12px;
 }
 
 /* Item list */
@@ -210,13 +221,9 @@ body {
   }
 }
 
-/* Search bar */
+/* Search bar — flex child pinned to bottom */
 .search-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 20;
+  flex-shrink: 0;
   padding: 8px 12px;
   padding-bottom: calc(8px + var(--safe-bottom));
   background: var(--color-bg);

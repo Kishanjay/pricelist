@@ -17,19 +17,19 @@ export function App() {
   }, [query]);
 
   return (
-    <>
+    <div className="app-shell">
+      <header className="header-row">
+        <span className="header-title">Pricelist</span>
+        {!loading && !error && (
+          <span className="header-count">{filtered.length} item{filtered.length !== 1 ? 's' : ''}</span>
+        )}
+      </header>
       <main className="main" ref={mainRef}>
-        <div className="header-row">
-          <span className="header-title">Pricelist</span>
-          {!loading && !error && (
-            <span className="header-count">{filtered.length} item{filtered.length !== 1 ? 's' : ''}</span>
-          )}
-        </div>
         {loading && <LoadingState />}
         {error && <ErrorState message={error} onRetry={retry} />}
         {!loading && !error && <ItemList items={filtered} query={query} />}
       </main>
       <SearchBar query={query} onQueryChange={setQuery} />
-    </>
+    </div>
   );
 }
