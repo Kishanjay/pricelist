@@ -1,10 +1,17 @@
 import type { ParsedRow, PriceItem } from '../types';
 
+function pickBest(rows: ParsedRow[]): ParsedRow | null {
+  if (rows.length === 0) return null;
+  return rows.reduce((a, b) => {
+    if (a.unitprice !== b.unitprice) return a.unitprice < b.unitprice ? a : b;
+    if (a.date !== b.date) return a.date > b.date ? a : b;
+    return a.store.toLowerCase() < b.store.toLowerCase() ? a : b;
+  });
+}
+
 /**
- * Groups parsed rows by normalized item name and picks the best price for each.
- *
- * Best price = lowest unitprice.
- * Tie-break: most recent date, then alphabetically first store name.
+ * Groups parsed rows by normalized item name.
+ * For each group, derives the best bonus and best normal price.
  */
 export function deriveBestPrices(rows: ParsedRow[]): PriceItem[] {
   const groups = new Map<string, ParsedRow[]>();
@@ -22,28 +29,37 @@ export function deriveBestPrices(rows: ParsedRow[]): PriceItem[] {
   const items: PriceItem[] = [];
 
   for (const [, group] of groups) {
-    const best = group.reduce((a, b) => {
-      if (a.unitprice !== b.unitprice) return a.unitprice < b.unitprice ? a : b;
-      if (a.date !== b.date) return a.date > b.date ? a : b;
-      return a.store.toLowerCase() < b.store.toLowerCase() ? a : b;
-    });
+    const bonusRows = group.filter((r) => r.type === 'bonus');
+    const normalRows = group.filter((r) => r.type !== 'bonus');
 
-    // Sort all rows for this item by unitprice ascending
+    const bestBonus = pickBest(bonusRows);
+    const bestNormal = pickBest(normalRows);
+
     const sorted = [...group].sort((a, b) => a.unitprice - b.unitprice);
+    const displayName = sorted[0].item;
 
     items.push({
-      item: best.item,
-      unitprice: best.unitprice,
-      price: best.price,
-      quantity: best.quantity,
-      unit: best.unit,
-      store: best.store,
-      date: best.date,
-      searchText: best.item.toLowerCase(),
+      item: displayName,
+      searchText: displayName.toLowerCase(),
+      bestNormal,
+      bestBonus,
       rows: sorted,
     });
   }
 
-  items.sort((a, b) => a.searchText.localeCompare(b.searchText));
+  // Sort by the lowest available unitprice across both types
+  items.sort((a, b) => {
+    const aPrice = Math.min(
+      a.bestNormal?.unitprice ?? Infinity,
+      a.bestBonus?.unitprice ?? Infinity,
+    );
+    const bPrice = Math.min(
+      b.bestNormal?.unitprice ?? Infinity,
+      b.bestBonus?.unitprice ?? Infinity,
+    );
+    if (aPrice !== bPrice) return aPrice - bPrice;
+    return a.searchText.localeCompare(b.searchText);
+  });
+
   return items;
 }

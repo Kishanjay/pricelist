@@ -6,6 +6,7 @@ export interface RawRow {
   unit: string;
   unitprice: string;
   store: string;
+  type: string;
   date: string;
 }
 
@@ -17,18 +18,15 @@ export interface ParsedRow {
   unit: string;
   unitprice: number;
   store: string;
+  type: string;
   date: string;
 }
 
 /** Derived best-price item for display */
 export interface PriceItem {
   item: string;
-  unitprice: number;
-  price: number;
-  quantity: string;
-  unit: string;
-  store: string;
-  date: string;
   searchText: string;
+  bestNormal: ParsedRow | null;
+  bestBonus: ParsedRow | null;
   rows: ParsedRow[];
 }

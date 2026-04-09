@@ -4,7 +4,7 @@ const SHEET_ID = import.meta.env.VITE_SHEET_ID;
 const API_KEY = import.meta.env.VITE_API_KEY;
 const SHEET_RANGE = import.meta.env.VITE_SHEET_RANGE || 'Sheet1';
 
-const EXPECTED_HEADERS = ['item', 'price', 'quantity', 'unit', 'unitprice', 'store', 'date'];
+const EXPECTED_HEADERS = ['item', 'price', 'quantity', 'unit', 'unitprice', 'store', 'type', 'date'];
 
 export async function fetchSheetData(): Promise<RawRow[]> {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_RANGE}?key=${API_KEY}`;
@@ -41,6 +41,7 @@ export async function fetchSheetData(): Promise<RawRow[]> {
     unit: row[headerIndices.unit] ?? '',
     unitprice: row[headerIndices.unitprice] ?? '',
     store: row[headerIndices.store] ?? '',
+    type: row[headerIndices.type] ?? '',
     date: row[headerIndices.date] ?? '',
   }));
 }

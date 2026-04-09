@@ -11,6 +11,7 @@ export function ItemDetail({ item }: ItemDetailProps) {
         <tr>
           <th>Store</th>
           <th>Qty</th>
+          <th>Type</th>
           <th>Unit price</th>
         </tr>
       </thead>
@@ -19,6 +20,7 @@ export function ItemDetail({ item }: ItemDetailProps) {
           <tr key={i}>
             <td>{row.store || '—'}</td>
             <td>{row.quantity || '—'}</td>
+            <td>{row.type || '—'}</td>
             <td>€{row.unitprice.toFixed(2)}</td>
           </tr>
         ))}

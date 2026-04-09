@@ -39,9 +39,10 @@ export function parseRow(raw: RawRow): ParsedRow | null {
   const quantity = raw.quantity.trim();
   const unit = (raw.unit ?? '').trim();
   const store = raw.store.trim();
+  const type = (raw.type ?? '').trim().toLowerCase();
   const date = (raw.date ?? '').trim();
 
-  return { item, price, quantity, unit, unitprice, store, date };
+  return { item, price, quantity, unit, unitprice, store, type, date };
 }
 
 export function parseRows(rawRows: RawRow[]): ParsedRow[] {
@@ -53,7 +54,7 @@ export function parseRows(rawRows: RawRow[]): ParsedRow[] {
     if (!row) continue;
 
     // Deduplicate by all fields
-    const key = `${row.item.toLowerCase()}|${row.store.toLowerCase()}|${row.price}|${row.quantity.toLowerCase()}|${row.date}`;
+    const key = `${row.item.toLowerCase()}|${row.store.toLowerCase()}|${row.price}|${row.quantity.toLowerCase()}|${row.type}|${row.date}`;
     if (seen.has(key)) continue;
     seen.add(key);
 
