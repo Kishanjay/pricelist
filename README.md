@@ -1,5 +1,6 @@
 # Claude
 
+```
 All phases complete. Here's what was built:
 
   Project structure
@@ -20,6 +21,7 @@ All phases complete. Here's what was built:
     components/ErrorState.tsx — Error with retry button
     index.css              — All styles, dark mode, mobile-first
     main.tsx               — Entry point
+```
 
   To get it running
 
