@@ -11,19 +11,26 @@ export function ItemDetail({ item }: ItemDetailProps) {
         <tr>
           <th>Store</th>
           <th>Qty</th>
-          <th>Type</th>
           <th>Unit price</th>
         </tr>
       </thead>
       <tbody>
-        {item.rows.map((row, i) => (
-          <tr key={i}>
-            <td>{row.store || '—'}</td>
-            <td>{row.quantity || '—'}</td>
-            <td>{row.type || '—'}</td>
-            <td>€{row.unitprice.toFixed(2)}</td>
-          </tr>
-        ))}
+        {item.rows.map((row, i) => {
+          const isBonus = row.type?.toLowerCase() === 'bonus';
+          const qty = row.quantity
+            ? `${row.quantity}${row.unit || ''}`
+            : '—';
+          return (
+            <tr key={i}>
+              <td>{row.store || '—'}</td>
+              <td>{qty}</td>
+              <td>
+                {isBonus && <span className="bonus-badge">b</span>}
+                €{row.unitprice.toFixed(2)}
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

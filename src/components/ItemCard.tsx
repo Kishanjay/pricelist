@@ -24,9 +24,6 @@ export function ItemCard({ item, expanded, onToggle }: ItemCardProps) {
             <span className={showBonus ? 'price-bonus' : 'price-normal'}>
               €{primary.unitprice.toFixed(2)}
             </span>
-            {showBonus && bestNormal && (
-              <span className="price-strikethrough">€{bestNormal.unitprice.toFixed(2)}</span>
-            )}
           </div>
           <div className="item-quantity">/{primary.unit || primary.quantity}</div>
         </div>

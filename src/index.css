@@ -74,9 +74,16 @@ body,
 }
 
 .header-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-weight: 700;
   font-size: 1rem;
   color: var(--color-text);
+}
+
+.header-logo {
+  font-size: 0.9rem;
 }
 
 .header-count {
@@ -84,9 +91,45 @@ body,
   color: var(--color-text-muted);
 }
 
+/* Pull-to-refresh */
+.main-wrapper {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.pull-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.pull-arrow {
+  font-size: 1.3rem;
+  color: var(--color-text-muted);
+}
+
+.pull-spinning {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* Main scrollable area — only this part scrolls */
 .main {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 4px 12px 12px;
@@ -176,6 +219,23 @@ body,
   font-size: 0.75rem;
   color: var(--color-text-muted);
   margin-top: 1px;
+}
+
+/* Bonus badge */
+.bonus-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #e67300;
+  color: #ffffff;
+  font-size: 0.55rem;
+  font-weight: 700;
+  margin-right: 3px;
+  vertical-align: middle;
+  line-height: 1;
 }
 
 /* Item detail (expanded) */

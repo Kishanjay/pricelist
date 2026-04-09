@@ -47,19 +47,7 @@ export function deriveBestPrices(rows: ParsedRow[]): PriceItem[] {
     });
   }
 
-  // Sort by the lowest available unitprice across both types
-  items.sort((a, b) => {
-    const aPrice = Math.min(
-      a.bestNormal?.unitprice ?? Infinity,
-      a.bestBonus?.unitprice ?? Infinity,
-    );
-    const bPrice = Math.min(
-      b.bestNormal?.unitprice ?? Infinity,
-      b.bestBonus?.unitprice ?? Infinity,
-    );
-    if (aPrice !== bPrice) return aPrice - bPrice;
-    return a.searchText.localeCompare(b.searchText);
-  });
+  items.sort((a, b) => a.searchText.localeCompare(b.searchText));
 
   return items;
 }
