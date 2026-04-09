@@ -343,6 +343,21 @@ body {
   opacity: 0.8;
 }
 
+.mock-button {
+  padding: 10px 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mock-button:active {
+  opacity: 0.8;
+}
+
 /* Empty state */
 .empty-state {
   text-align: center;

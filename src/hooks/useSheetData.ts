@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { fetchSheetData } from '../api/sheets';
+import { MOCK_ROWS } from '../api/mockData';
 import { parseRows } from '../utils/normalize';
 import { deriveBestPrices } from '../utils/derive';
 import type { PriceItem } from '../types';
@@ -33,9 +34,15 @@ export function useSheetData() {
     }
   }, []);
 
+  const loadMock = useCallback(() => {
+    const parsed = parseRows(MOCK_ROWS);
+    const items = deriveBestPrices(parsed);
+    setState({ items, loading: false, error: null });
+  }, []);
+
   useEffect(() => {
     load();
   }, [load]);
 
-  return { ...state, retry: load };
+  return { ...state, retry: load, loadMock };
 }

@@ -8,7 +8,7 @@ import { LoadingState } from './LoadingState';
 import { ErrorState } from './ErrorState';
 
 export function App() {
-  const { items, loading, error, retry } = useSheetData();
+  const { items, loading, error, retry, loadMock } = useSheetData();
   const { query, setQuery, filtered } = useSearch(items);
   const keyboardOffset = useKeyboardOffset();
   const mainRef = useRef<HTMLElement>(null);
@@ -28,7 +28,7 @@ export function App() {
       </header>
       <main className="main" ref={mainRef}>
         {loading && <LoadingState />}
-        {error && <ErrorState message={error} onRetry={retry} />}
+        {error && <ErrorState message={error} onRetry={retry} onLoadMock={loadMock} />}
         {!loading && !error && <ItemList items={filtered} query={query} />}
       </main>
       <SearchBar query={query} onQueryChange={setQuery} keyboardOffset={keyboardOffset} />
