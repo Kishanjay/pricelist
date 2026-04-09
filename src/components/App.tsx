@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { useSheetData } from '../hooks/useSheetData';
 import { useSearch } from '../hooks/useSearch';
+import { useKeyboardOffset } from '../hooks/useKeyboardOffset';
 import { ItemList } from './ItemList';
 import { SearchBar } from './SearchBar';
 import { LoadingState } from './LoadingState';
@@ -9,6 +10,7 @@ import { ErrorState } from './ErrorState';
 export function App() {
   const { items, loading, error, retry } = useSheetData();
   const { query, setQuery, filtered } = useSearch(items);
+  const keyboardOffset = useKeyboardOffset();
   const mainRef = useRef<HTMLElement>(null);
 
   // Scroll to top when search query changes
@@ -29,7 +31,7 @@ export function App() {
         {error && <ErrorState message={error} onRetry={retry} />}
         {!loading && !error && <ItemList items={filtered} query={query} />}
       </main>
-      <SearchBar query={query} onQueryChange={setQuery} />
+      <SearchBar query={query} onQueryChange={setQuery} keyboardOffset={keyboardOffset} />
     </div>
   );
 }

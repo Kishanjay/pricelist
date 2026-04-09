@@ -3,9 +3,10 @@ import { useRef } from 'react';
 interface SearchBarProps {
   query: string;
   onQueryChange: (query: string) => void;
+  keyboardOffset: number;
 }
 
-export function SearchBar({ query, onQueryChange }: SearchBarProps) {
+export function SearchBar({ query, onQueryChange, keyboardOffset }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleClear = () => {
@@ -14,7 +15,10 @@ export function SearchBar({ query, onQueryChange }: SearchBarProps) {
   };
 
   return (
-    <div className="search-bar">
+    <div
+      className="search-bar"
+      style={keyboardOffset > 0 ? { transform: `translateY(-${keyboardOffset}px)` } : undefined}
+    >
       <div className="search-input-wrapper">
         <span className="search-icon" aria-hidden="true">&#128269;</span>
         <input

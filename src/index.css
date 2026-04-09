@@ -48,16 +48,15 @@ body {
 }
 
 #root {
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* App shell — fixed flex layout, no scroll on the outer container */
+/* App shell — fixed layout, uses 100vh so it does NOT resize when keyboard opens */
 .app-shell {
   display: flex;
   flex-direction: column;
-  height: 100dvh;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -88,7 +87,8 @@ body {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 4px 12px 12px;
+  padding: 4px 12px;
+  padding-bottom: calc(56px + var(--safe-bottom) + 8px);
 }
 
 /* Item list */
@@ -221,13 +221,18 @@ body {
   }
 }
 
-/* Search bar — flex child pinned to bottom */
+/* Search bar — fixed at bottom, translated up when keyboard is open */
 .search-bar {
-  flex-shrink: 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
   padding: 8px 12px;
   padding-bottom: calc(8px + var(--safe-bottom));
   background: var(--color-bg);
   border-top: 1px solid var(--color-border);
+  transition: transform 0.1s ease-out;
 }
 
 .search-input-wrapper {
