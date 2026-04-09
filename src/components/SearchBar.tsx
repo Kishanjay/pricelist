@@ -3,10 +3,9 @@ import { useRef } from 'react';
 interface SearchBarProps {
   query: string;
   onQueryChange: (query: string) => void;
-  keyboardOffset: number;
 }
 
-export function SearchBar({ query, onQueryChange, keyboardOffset }: SearchBarProps) {
+export function SearchBar({ query, onQueryChange }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleClear = () => {
@@ -14,13 +13,14 @@ export function SearchBar({ query, onQueryChange, keyboardOffset }: SearchBarPro
     inputRef.current?.focus();
   };
 
+  const handleFocus = () => {
+    window.scrollTo(0, 0);
+    setTimeout(() => window.scrollTo(0, 0), 100);
+  };
+
   return (
-    <div
-      className="search-bar"
-      style={keyboardOffset > 0 ? { transform: `translateY(-${keyboardOffset}px)` } : undefined}
-    >
+    <div className="search-bar">
       <div className="search-input-wrapper">
-        <span className="search-icon" aria-hidden="true">&#128269;</span>
         <input
           ref={inputRef}
           className="search-input"
@@ -32,20 +32,20 @@ export function SearchBar({ query, onQueryChange, keyboardOffset }: SearchBarPro
           spellCheck={false}
           placeholder="Search items..."
           value={query}
+          onFocus={handleFocus}
           onChange={(e) => onQueryChange(e.target.value)}
         />
-        {query && (
-          <button
-            className="search-clear"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleClear();
-            }}
-            aria-label="Clear search"
-          >
-            &#x2715;
-          </button>
-        )}
+        <button
+          className="search-clear"
+          disabled={!query}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleClear();
+          }}
+          aria-label="Clear search"
+        >
+          &#x2715;
+        </button>
       </div>
     </div>
   );
